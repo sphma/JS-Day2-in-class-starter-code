@@ -10,35 +10,35 @@ const loggedIn = true;
 
 
 /////// PART 1 - Variables and Data Types demo///////
-var a = 'Test1';
-let b = 'Test2';
+// var a = 'Test1';
+// let b = 'Test2';
 
-function testVar(){
-  var a = 30;
+// function testVar(){
+//   var a = 30;
   
-  if(true){
-    var a = 50;
-    console.log(a);
-  }
-  console.log(a);
-}
+//   if(true){
+//     var a = 50;
+//     console.log(a);
+//   }
+//   console.log(a);
+// }
 
-function testLet(){
-  let a = 30;
+// function testLet(){
+//   let a = 30;
  
-  if(true){
-    let a = 50;
-    console.log(a);
-  }
-  console.log(a);
-}
+//   if(true){
+//     let a = 50;
+//     console.log(a);
+//   }
+//   console.log(a);
+// }
 
-console.log(a);
-console.log(b);
-console.log("Example using var");
-testVar();
-console.log("Example using LET");
-testLet();
+// console.log(a);
+// console.log(b);
+// console.log("Example using var");
+// testVar();
+// console.log("Example using LET");
+// testLet();
 // When you are done with this section you can comment out the console.logs above
 
 
@@ -51,16 +51,15 @@ const result2Element = document.getElementById('result2');
 
 ////starter code////
 //update code below to using template literals (not concatenation) to pull in the variables myName, color, make, into output
-result2Element.innerHTML = "Hello my name is {yourname} and I drive a {White Honda Civic}";
+result2Element.innerHTML = `Hello my name is ${myName} and I drive a ${car[0].color} ${car[0].make} ${car[0].model}`;
 
 
 //Footer Section
 const footerElement = document.getElementById("footer");
 //update code below to use template literals to pull in the myName and the current year
-footerElement.innerHTML = "&copy; Clint Tuttle 2024";
-
-
-
+const year = today.getFullYear();
+const yearString = year.toString();
+footerElement.innerHTML = `&copy; ${myName} ${yearString}`;
 
 
 //////// PART 3 - Ternary Operator////////
@@ -74,46 +73,64 @@ if (loggedIn) {
 }
 
 ////Sample code.  You can uncomment this to see how simple a ternaly operator can be
-// loggedIn ? alert("welcome back") : alert("please log in");
-
 ////section 2 -ternary operator to update the result3Element
-
-
+const result3Element = document.getElementById('result3');
+result3Element.innerHTML = loggedIn ? "welcome back!" : "please log in";
 
 
 
 //////// PART 4 - Arrow Functions////////
-function Greetings(name) {
-    return `Hello ${name}!`;
-};
+// function Greetings(name) {
+//     return `Hello ${name}!`;
+// };
 
-console.log(Greetings("Clint"));
+// console.log(Greetings("Clint"));
 
 //Make a copy of the above function and rename it GreetingsArrow() and then convert function to an arrow function here
- 
+  const GreetingsArrow = (myName) => `Hello ${myName}!`;
+  console.log(GreetingsArrow("Clint"));
 
 
 
 //////// PART 5 - Array methods////////
+//  function printFruit() {
+
+//   let resultElement = document.getElementById("result5");
+
+//   resultElement.textContent = "";
+
+//   // Loop through the fruits array
+//   for (let i = 0; i < fruits.length; i++) {
+
+//       // Create a list item for each fruit
+//       let p = document.createElement("p");
+//       p.textContent = fruits[i];
+
+//       // Append the list item to the ordered list
+//       resultElement.appendChild(p);
+//   }
+
+// }
+
 function printFruit() {
 
     let resultElement = document.getElementById("result5");
 
     resultElement.textContent = "";
 
-    // Loop through the fruits array
-    for (let i = 0; i < fruits.length; i++) {
- 
-        // Create a list item for each fruit
-        let p = document.createElement("p");
-        p.textContent = fruits[i];
+    const startWithB = fruits.filter((fruit) => fruit.startsWith("b"));
 
+    //mapping loops through every element in an array and applies the function to each element
+    startWithB.map(fruit => {
+        let p = document.createElement("p");
+        p.textContent = fruit;
         // Append the list item to the ordered list
         resultElement.appendChild(p);
-    }
+    });
 
  }
- 
+
+
  
  function clearText() {
     let resultElement = document.getElementById("result5");
@@ -122,28 +139,27 @@ function printFruit() {
 
 
 
-
-
  //////// PART6 - Destructuring////////
  myCar(car[0]);
 
+//  function myCar(car) {
+//      var make = car.make;
+//      var model = car.model;
+//      var color = car.color;
+ 
+//      var message = `I drive a ${color} ${make} ${model}`;
+   
+//      document.getElementById("result6").textContent = message;
+//  }
+
+//convert the myCar function to use destructuring
  function myCar(car) {
-     var make = car.make;
-     var model = car.model;
-     var color = car.color;
+     let {color, make, model}= car;
  
      var message = `I drive a ${color} ${make} ${model}`;
    
      document.getElementById("result6").textContent = message;
  }
-
-//convert the myCar function to use destructuring
-
-
-
-
-
-
 
 //////// PART 7 - Spread Operator////////
 
@@ -163,14 +179,13 @@ const baseProduct = {
   
   // Merge basePrduct and Seasonal using spread operator and add lastUpdated property with a value of '2023-12-31'
   ///UPDATE THIS CODE
-  const currentProduct = { 
-
+  const currentProduct = { ...baseProduct, ...holidayPromo, lastUpdated : '2023-12-31'
 };
   
   //Check the result object in the console:
   console.log(currentProduct);
   //UPDATE THIS OUTPUT
-  document.getElementById("result7").textContent = `The .....`; 
+  document.getElementById("result7").textContent = `The ${currentProduct.name} are on sale for ${currentProduct.price} as of ${currentProduct.lastUpdated}`; 
 
 
 
@@ -184,12 +199,16 @@ const baseProduct = {
     let x = document.getElementById("part8-input").value;
     
     try { 
-  
+      if (x.trim() == '') throw 'EMPTY';
+      if (isNaN(x)) throw 'NOT A NUMBER';
+      if (x > 15) throw 'TOO HIGH';
+      if (x < 10) throw 'TOO LOW';
+      message.innerHTML = 'Success';
     }
     catch(err) {
+      message.innerHTML = 'Input is ' + err;
      } 
     finally {
-
     }
 
     
